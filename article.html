@@ -8,14 +8,19 @@
     <link rel="stylesheet" href="css/materialize.min.css" />
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#00897B" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <!-- Navigasi -->
     <nav class="teal lighten-1" role="navigation">
       <div class="nav-wrapper container">
         <a href="#" class="brand-logo" id="logo-container">News Reader</a>
-        <a href="#" class="sidenav-trigger" data-target="nav-mobile">&#9776;</a>
-
+        <a href="./index.html" class="sidenav-trigger" data-target="nav-mobile">
+          <i class="material-icons">arrow_back</i>
+        </a>
         <ul class="topnav right hide-on-med-and-down"></ul>
         <ul class="sidenav" id="nav-mobile"></ul>
       </div>
@@ -24,8 +29,11 @@
 
     <div class="container" id="body-content"></div>
 
+    <script
+      type="text/javascript"
+      src="https://unpkg.com/snarkdown@1.0.2/dist/snarkdown.umd.js"
+    ></script>
     <script src="js/materialize.min.js"></script>
-    <script src="js/nav.js"></script>
     <script src="js/api.js"></script>
 
     <script>
@@ -44,10 +52,8 @@
       } else {
         console.log("ServiceWorker belum didukung browser ini.");
       }
-
-      // REQUEST API UNTUK PERTAMA KALI
       document.addEventListener("DOMContentLoaded", function() {
-        getArticles();
+        getArticleById();
       });
     </script>
   </body>
