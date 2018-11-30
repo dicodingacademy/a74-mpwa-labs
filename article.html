@@ -29,12 +29,21 @@
 
     <div class="container" id="body-content"></div>
 
+    <div class="fixed-action-btn">
+      <a class="btn-floating btn-large red" id="save">
+        <i class="large material-icons">save</i>
+      </a>
+    </div>
+
     <script
       type="text/javascript"
       src="https://unpkg.com/snarkdown@1.0.2/dist/snarkdown.umd.js"
     ></script>
     <script src="js/materialize.min.js"></script>
     <script src="js/api.js"></script>
+
+    <script src="js/idb.js"></script>
+    <script src="js/db.js"></script>
 
     <script>
       // REGISTER SERVICE WORKER
@@ -52,9 +61,29 @@
       } else {
         console.log("ServiceWorker belum didukung browser ini.");
       }
-      document.addEventListener("DOMContentLoaded", function() {
-        getArticleById();
-      });
+document.addEventListener("DOMContentLoaded", function() {
+  var urlParams = new URLSearchParams(window.location.search);
+  var isFromSaved = urlParams.get("saved");
+
+  var save = document.getElementById("save");
+
+  if (isFromSaved) {
+    // Hide fab jika dimuat dari indexed db
+    save.style.display = 'none';
+    
+    // ambil artikel lalu tampilkan
+    getSavedArticleById();
+  } else {
+    var item = getArticleById();
+  }
+
+  save.onclick = function() {
+    console.log("Tombol FAB di klik.");
+    item.then(function(article) {
+      saveForLater(article);
+    });
+  };
+});
     </script>
   </body>
 </html>

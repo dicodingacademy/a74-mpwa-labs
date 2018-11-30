@@ -25,8 +25,11 @@
     <div class="container" id="body-content"></div>
 
     <script src="js/materialize.min.js"></script>
+    <script src="js/idb.js"></script>
+    <script src="js/db.js"></script>
     <script src="js/nav.js"></script>
     <script src="js/api.js"></script>
+    
 
     <script>
       // REGISTER SERVICE WORKER
@@ -47,7 +50,9 @@
 
       // REQUEST API UNTUK PERTAMA KALI
       document.addEventListener("DOMContentLoaded", function() {
-        getArticles();
+        var page = window.location.hash.substr(1);
+
+
       });
     </script>
   </body>
