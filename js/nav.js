@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function() {
         var content = document.querySelector("#body-content");
         if (this.status == 200) {
           content.innerHTML = xhttp.responseText;
+          if(page == 'home') getArticles()
         } else if (this.status == 404) {
           content.innerHTML = "<p>Halaman tidak ditemukan.</p>";
         } else {
