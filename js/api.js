@@ -23,38 +23,15 @@ function error(error) {
   console.log("Error : " + error);
 }
 
+function fetchApi(url) {
+  return fetch(url)
+  .then(status)
+  .then(json)
+}
+
 // Blok kode untuk melakukan request data json
 function getArticles() {
-  if ("caches" in window) {
-    caches.match(base_url + "articles").then(function(response) {
-      if (response) {
-        response.json().then(function(data) {
-          var articlesHTML = "";
-          data.result.forEach(function(article) {
-            articlesHTML += `
-                  <div class="card">
-                    <a href="./article.html?id=${article.id}">
-                      <div class="card-image waves-effect waves-block waves-light">
-                        <img src="${article.thumbnail}" />
-                      </div>
-                    </a>
-                    <div class="card-content">
-                      <span class="card-title truncate">${article.title}</span>
-                      <p>${article.description}</p>
-                    </div>
-                  </div>
-                `;
-          });
-          // Sisipkan komponen card ke dalam elemen dengan id #content
-          document.getElementById("articles").innerHTML = articlesHTML;
-        });
-      }
-    });
-  }
-
-  fetch(base_url + "articles")
-    .then(status)
-    .then(json)
+  fetchApi(base_url + "articles")
     .then(function(data) {
       // Objek/array JavaScript dari response.json() masuk lewat data.
 
@@ -86,31 +63,7 @@ function getArticleById() {
   var urlParams = new URLSearchParams(window.location.search);
   var idParam = urlParams.get("id");
 
-  if ("caches" in window) {
-    caches.match(base_url + "article/" + idParam).then(function(response) {
-      if (response) {
-        response.json().then(function(data) {
-          var articleHTML = `
-            <div class="card">
-              <div class="card-image waves-effect waves-block waves-light">
-                <img src="${data.result.cover}" />
-              </div>
-              <div class="card-content">
-                <span class="card-title">${data.result.post_title}</span>
-                ${snarkdown(data.result.post_content)}
-              </div>
-            </div>
-          `;
-          // Sisipkan komponen card ke dalam elemen dengan id #content
-          document.getElementById("body-content").innerHTML = articleHTML;
-        });
-      }
-    });
-  }
-
-  fetch(base_url + "article/" + idParam)
-    .then(status)
-    .then(json)
+  fetchApi(base_url + "article/" + idParam)
     .then(function(data) {
       // Objek JavaScript dari response.json() masuk lewat variabel data.
       console.log(data);

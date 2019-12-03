@@ -27,14 +27,16 @@ self.addEventListener("fetch", function(event) {
   var base_url = "https://readerapi.codepolitan.com/";
 
   if (event.request.url.indexOf(base_url) > -1) {
-    event.respondWith(
-      caches.open(CACHE_NAME).then(function(cache) {
-        return fetch(event.request).then(function(response) {
-          cache.put(event.request.url, response.clone());
-          return response;
-        })
-      })
-    );
+    event.respondWith(async function () {
+      const cache = await caches.open(CACHE_NAME);
+      const cachedResponse = await cache.match(event.request);
+      if (cachedResponse) return cachedResponse;
+      const networkResponse = await fetch(event.request);
+      event.waitUntil(
+        cache.put(event.request, networkResponse.clone())
+      );
+      return networkResponse;
+    }());
   } else {
     event.respondWith(
       caches.match(event.request, { ignoreSearch: true }).then(function(response) {
